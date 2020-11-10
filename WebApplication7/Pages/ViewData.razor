@@ -1,0 +1,280 @@
+﻿@page "/view"
+@using Models
+@using WebApplication7.Data
+@inject IAdultService AdultService
+<link rel="stylesheet" href="/css/index.css">
+<section class="hero is-medium is-primary is-bold">
+    <div class="hero-body has-text-centered">
+        <div class="container">
+            <h1 class="title">View Adult data below</h1>
+        </div>
+    </div>
+</section>
+<div class="table-container" id="tab">
+<table class="table is-bordered is-striped is-hoverable is-narrow">
+    <thead>
+    <tr>
+        <th>
+            
+        </th>
+        <th>
+            <input type="number" @oninput="@((arg) => FilterById(arg))"/>
+        </th>
+        <th>
+            <input type="text" @oninput="@((arg) => FilterByName(arg))"/>
+        </th>
+        <th>
+            <input type="text" @oninput="@((arg) => FilterByLastName(arg))"/>
+        </th>
+        <th>
+            <input type="text" @oninput="@((arg) => FilterByHair(arg))"/>
+        </th>
+        <th>
+            <input type="text" @oninput="@((arg) => FilterByEye(arg))"/>
+        </th>
+        <th>
+            <input type="number" @oninput="@((arg) => FilterByAge(arg))"/>
+        </th>
+        <th>
+            <input type="number" @oninput="@((arg) => FilterByWeight(arg))"/>
+        </th>
+        <th>
+            <input type="number" @oninput="@((arg) => FilterByHeight(arg))"/>
+        </th>
+        <th>
+            <select @onchange="@((arg => FilterBySex(arg)))">
+                <option selected value></option>
+                <option value="M">M</option>
+                <option value="F">F</option>
+            </select>
+        </th>
+        <th>
+            <input type="text" @oninput="@((arg) => FilterByProfession(arg))"/>
+        </th>
+    </tr>
+    <tr>
+        <th>Del</th>
+        <th>Adult ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Hair Color</th>
+        <th>Eye Color</th>
+        <th>Age</th>
+        <th>Weight</th>
+        <th>Height</th>
+        <th>Sex</th>
+        <th>JobTitle</th>
+    </tr>
+    </thead>
+    @if (adultsToShow == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else if (!adultsToShow.Any())
+    {
+        <p>
+            <em>No adults exist. Add some!</em>
+        </p>
+    }
+    else
+    {
+        <tbody>
+        @foreach (var item in adultsToShow)
+        {
+            <tr>
+                <td class="is-vcentered has-text-centered">
+                    <button @onclick="@(() => RemoveAdultAsync(item.Id))">
+                        <i class="fa fa-trash-alt" style="color: red"></i>
+                    </button>
+                </td>
+                <td>@item.Id</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.HairColor</td>
+                <td>@item.EyeColor</td>
+                <td>@item.Age</td>
+                <td>@item.Weight</td>
+                <td>@item.Height</td>
+                <td>@item.Sex</td>
+                <td>@item.JobTitle</td>
+            </tr>
+        }
+        </tbody>
+    }
+</table>
+</div>
+@code {
+    private IList<Adult> allAdults;
+    private IList<Adult> adultsToShow;
+    private int? adultID;
+    private string? adultName;
+    private int? adultAge;
+    private string? adultLastName;
+    private string? adultHair;
+    private string? adultEye;
+    private float? adultWeight;
+    private float? adultHeight;
+    private string? adultProfession;
+    private string? adultSex;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allAdults = await AdultService.getAdultsAsync();
+        adultsToShow = allAdults;
+    }
+
+
+    private void FilterById(ChangeEventArgs args)
+    {
+        adultID = null;
+        try
+        {
+            adultID = int.Parse(args.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByEye(ChangeEventArgs args)
+    {
+        adultEye = null;
+        try
+        {
+            adultEye = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByProfession(ChangeEventArgs args)
+    {
+        adultProfession = null;
+        try
+        {
+            adultProfession = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByAge(ChangeEventArgs arg)
+    {
+        adultAge = null;
+        try
+        {
+            adultAge = int.Parse(arg.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByWeight(ChangeEventArgs arg)
+    {
+        adultWeight = null;
+        try
+        {
+            adultWeight = float.Parse(arg.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByHeight(ChangeEventArgs args)
+    {
+        adultHeight = null;
+        try
+        {
+            adultHeight = float.Parse(args.Value.ToString());
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByName(ChangeEventArgs args)
+    {
+        adultName = null;
+        try
+        {
+            adultName = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByHair(ChangeEventArgs args)
+    {
+        adultHair = null;
+        try
+        {
+            adultHair = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByLastName(ChangeEventArgs args)
+    {
+        adultLastName = null;
+        try
+        {
+            adultLastName = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterBySex(ChangeEventArgs args)
+    {
+        adultSex = null;
+        try
+        {
+            adultSex = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        adultsToShow = allAdults.Where(t => (adultID != null && t.Id == adultID || adultID == null)
+                                            && (!string.IsNullOrEmpty(adultName) && t.FirstName == adultName || string.IsNullOrEmpty(adultName))
+                                            && (adultAge != null && t.Age == adultAge || adultAge == null)
+                                            && (!string.IsNullOrEmpty(adultLastName) && t.LastName == adultLastName || string.IsNullOrEmpty(adultLastName))
+                                            && (!string.IsNullOrEmpty(adultHair) && t.HairColor == adultHair || string.IsNullOrEmpty(adultHair))
+                                            && (!string.IsNullOrEmpty(adultEye) && t.EyeColor == adultEye || string.IsNullOrEmpty(adultEye))
+                                            && (adultWeight != null && t.Weight == adultWeight || adultWeight == null)
+                                            && (adultHeight != null && t.Height == adultHeight || adultHeight == null)
+                                            && (!string.IsNullOrEmpty(adultSex) && t.Sex == adultSex || string.IsNullOrEmpty(adultSex))
+                                            && (!string.IsNullOrEmpty(adultProfession) && t.JobTitle == adultProfession || string.IsNullOrEmpty(adultProfession))).ToList();
+    }
+
+    private async Task RemoveAdultAsync(int adultID)
+    {
+        Adult adultToRemove = allAdults.First(t => t.Id == adultID);
+        await AdultService.RemoveAdultAsync(adultID);
+        adultsToShow.Remove(adultToRemove);
+    }
+
+}

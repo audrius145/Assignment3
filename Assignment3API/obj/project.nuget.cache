@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "MPPo+NUaqVulUS97Q+GyuOdscbE1coupZsJNxFYtG//CCnRNfr3r14d63HmTuHlyONvZnp44ayZddj538vEBjg==",
+  "success": true,
+  "projectFilePath": "D:\\.net\\Solution1\\Assignment3API\\Assignment3API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\xoxo\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

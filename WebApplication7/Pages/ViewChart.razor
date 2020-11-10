@@ -1,0 +1,55 @@
+﻿@page "/chart"
+@using Models
+@using WebApplication7.Data
+@using WebApplication7.Model
+@inject IAdultService AdultService;
+<section class="hero is-medium is-primary is-bold">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">View the charts</h1>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <SfAccumulationChart Title="Adult eye colors">
+    <AccumulationChartSeriesCollection>
+      <AccumulationChartSeries  DataSource="frequencyEye" XName="Color" YName="Count" Name="EyeColor" PointColorMapping="Fill">
+        <AccumulationDataLabelSettings Visible="true" Name="Value"></AccumulationDataLabelSettings>
+      </AccumulationChartSeries>
+    </AccumulationChartSeriesCollection>
+    <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
+  </SfAccumulationChart>
+</section>
+<section class="section">
+<SfAccumulationChart Title="Adult hair colors">
+  <AccumulationChartSeriesCollection>
+    <AccumulationChartSeries  DataSource="frequencyHair"XName="Key" YName="Value" Name="HairColor" PointColorMapping="Fill">
+      <AccumulationDataLabelSettings Visible="true" Name="Value"></AccumulationDataLabelSettings>
+    </AccumulationChartSeries>
+  </AccumulationChartSeriesCollection>
+  <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
+</SfAccumulationChart>
+</section>
+<section class="section">
+<SfAccumulationChart Title="Adult sex distribution">
+  <AccumulationChartSeriesCollection>
+    <AccumulationChartSeries DataSource="frequencySex"  XName="Key" YName="Value" Name="Sex" PointColorMapping="Fill">
+      <AccumulationDataLabelSettings Visible="true" Name="Value"></AccumulationDataLabelSettings>
+    </AccumulationChartSeries>
+  </AccumulationChartSeriesCollection>
+  <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
+</SfAccumulationChart>
+</section>
+@code {
+  private Dictionary<string, int> frequencyEye;
+  private Dictionary<string, int> frequencyHair;
+  private Dictionary<string, int> frequencySex;
+  private IList<Adult> allAdults;
+  protected override async Task OnInitializedAsync()
+  {
+    allAdults = await AdultService.getAdultsAsync();
+    frequencyEye = allAdults.GroupBy(x => x.EyeColor).ToDictionary(x => x.Key, x=>x.Count());
+    frequencyHair = allAdults.GroupBy(x => x.HairColor).ToDictionary(x => x.Key, x => x.Count());
+    frequencySex = allAdults.GroupBy(x => x.Sex).ToDictionary(x => x.Key, x => x.Count());
+  }
+}

@@ -1,0 +1,121 @@
+﻿@page "/add"
+@using Models
+@using WebApplication7.Data
+@inject IAdultService AdultService
+@inject NavigationManager NavigationManager
+<section class="hero is-medium is-primary is-bold">
+    <div class="hero-body has-text-centered">
+        <div class="container">
+            <h1 class="title">Add a new adult</h1>
+        </div>
+    </div>
+</section>
+<EditForm Model="@newAdult" OnValidSubmit="@AddNewAdultAsync">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="columns is-vcentered is-centered">
+        <section class="box">
+            <div class="field">
+                <label class="label">Job Title</label>
+                <div class="control">
+                    <InputText @bind-Value="newAdult.JobTitle" class="input" type="text" placeholder="Job Title"/>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">First Name</label>
+                <div class="control">
+                    <InputText @bind-Value="newAdult.FirstName" class="input" type="text" placeholder="First Name"/>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Last Name</label>
+                <div class="control">
+                    <InputText @bind-Value="newAdult.LastName" class="input" type="text" placeholder="Last name"/>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Eye Colour</label>
+                <div class="control">
+                    <div class="select">
+                        <InputSelect @bind-Value="newAdult.EyeColor">
+                            <option value="Brown">Brown</option>
+                            <option value="Grey">Grey</option>
+                            <option value="Green">Green</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Amber">Amber</option>
+                            <option value="Hazel">Hazel</option>
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Hair Colour</label>
+                <div class="control">
+                    <div class="select">
+                        <InputSelect @bind-Value="newAdult.HairColor">
+                            <option value="Blond">Blond</option>
+                            <option value="Red">Red</option>
+                            <option value="Brown">Brown</option>
+                            <option value="Black">Black</option>
+                            <option value="White">White</option>
+                            <option value="Grey">Grey</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Green">Green</option>
+                            <option value="Leverpostej">Leverpostej</option>
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Age</label>
+                <div class="control">
+                    <InputNumber @bind-Value="newAdult.Age" class="input" type="number" placeholder="Age input"/>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Weight</label>
+                <div class="control">
+                    <InputNumber @bind-Value="newAdult.Weight" class="input" type="number" placeholder="Weight input"/>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Height</label>
+                <div class="control">
+                    <InputNumber @bind-Value="newAdult.Height" class="input" type="number" placeholder="Height Input"/>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Sex</label>
+                <div class="control">
+                    <div class="select">
+                        <InputSelect @bind-Value="newAdult.Sex">
+                            <option selected value="M">M</option>
+                            <option value="F">F</option>
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link" type="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</EditForm>
+
+@code {
+    private Adult newAdult = new Adult();
+    private async Task AddNewAdultAsync()
+    {
+        await AdultService.AddAdultAsync(newAdult);
+        NavigationManager.NavigateTo("/view");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        newAdult.EyeColor = "Brown";
+        newAdult.HairColor = "Blond";
+        newAdult.Sex = "M";
+    }
+
+}

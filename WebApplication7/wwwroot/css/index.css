@@ -1,0 +1,9 @@
+﻿
+table {
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: fixed;
+    overflow: scroll;
+    display:block;
+    width: 95%;
+}
